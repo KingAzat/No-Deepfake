@@ -1,0 +1,14 @@
+# No-DeepFake Forensic Lab — Dépendances Python
+# Installation : pip install -r requirements.txt
+
+flask>=3.0.0
+Pillow>=10.0.0
+numpy>=1.24.0
+werkzeug>=3.0.0
+
+# Modules audio (décommenter quand detector_audio.py sera activé)
+# librosa>=0.10.0
+# soundfile>=0.12.0
+
+# Modules vidéo (décommenter quand detector_video.py sera activé)
+# opencv-python-headless>=4.8.0
