@@ -1,5 +1,9 @@
 # 🛡️ No-DeepFake Forensic Lab — v3.0
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Status](https://img.shields.io/badge/status-stable-green.svg)]()
+
 > **AI-generated media detection through multi-vector forensic analysis.**  
 > Upload an image and receive a detailed forensic report with per-marker scores, combined scoring rules, and a final verdict.
 
@@ -30,14 +34,32 @@
 
 - Python 3.10+
 - pip
+- (Optional but recommended) `venv` or `virtualenv`
 
-### 2. Install dependencies
+### 2. Clone & Setup
+
+```bash
+# Clone the repository (if applicable)
+# git clone https://github.com/yourusername/no-deepfake.git
+# cd no-deepfake
+
+# Create a virtual environment (recommended)
+python -m venv venv
+
+# Activate the virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Run the server
+### 4. Run the server
 
 ```bash
 python app.py
@@ -121,6 +143,8 @@ Returns server status.
 | `0.50 – 0.75` | 🚨 LIKELY AI-GENERATED | HIGH |
 | `> 0.75` | ❌ AI-GENERATED | VERY HIGH |
 
+> ⚠️ **Note:** These thresholds are calibrated on current-generation models. Results should be interpreted as probabilistic indicators, not absolute proof.
+
 ---
 
 ## ⚖️ Marker Weights (Image)
@@ -152,14 +176,104 @@ werkzeug>=3.0.0
 
 ---
 
+## 💡 Usage Examples
+
+### Via Web Interface
+1. Navigate to `http://localhost:5000`
+2. Drag & drop or select an image file
+3. Click "Analyze" and wait for the forensic report
+
+### Via cURL (API)
+```bash
+curl -X POST http://localhost:5000/analyze \
+  -F "file=@/path/to/your/image.jpg"
+```
+
+### Via Python Script
+```python
+import requests
+
+files = {'file': open('image.jpg', 'rb')}
+response = requests.post('http://localhost:5000/analyze', files=files)
+print(response.json())
+```
+
+---
+
+## ⚠️ Limitations & Known Issues
+
+- **JPEG Compression:** Heavily compressed images may produce false positives on ELA.
+- **Resolution:** Very low-resolution images (< 100x100px) may yield unreliable results.
+- **Artistic Filters:** Images with heavy artistic filters or post-processing may trigger false alarms.
+- **New Models:** Rapidly evolving AI generation techniques may temporarily bypass detection until recalibration.
+- **Audio/Video:** These modules are not yet implemented (coming in v4.0).
+
+---
+
+## ❓ FAQ / Troubleshooting
+
+**Q: Why is my analysis taking so long?**  
+A: Large images (> 4000px) require more processing time. Consider resizing before upload.
+
+**Q: Can I trust a "AUTHENTIC" verdict?**  
+A: While our system is robust, no detector is infallible. Use results as one piece of evidence among others.
+
+**Q: The server won't start — port 5000 already in use?**  
+A: Change the port in `app.py`: `app.run(host='0.0.0.0', port=8080)`
+
+**Q: How often should I update the model weights?**  
+A: We recommend recalibrating every 3–6 months as new generative models emerge.
+
+---
+
 ## 🔒 Security Notes
 
 - Uploaded files are saved with a UUID prefix and **deleted immediately** after analysis.
 - Max upload size: **200 MB**.
 - The app binds to `0.0.0.0` for local use. Do not expose to the internet without a reverse proxy and authentication.
+- For production deployment, consider adding rate limiting, HTTPS, and user authentication.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) (if available) before contributing.
+
+---
+
+## 📚 Resources & Further Reading
+
+- [DeepFake Detection Challenge (Facebook)](https://ai.facebook.com/datasets/dfdc/)
+- [Google Jigsaw DeepFake Dataset](https://github.com/google/deepfake-detection)
+- [Forensic Analysis of Digital Images (Academic Paper)](https://ieeexplore.ieee.org/document/XXXXXXX)
+- [Understanding GAN Artifacts in Frequency Domain](https://arxiv.org/abs/XXXX.XXXXX)
 
 ---
 
 ## 📜 License
 
-MIT — free to use, modify, and distribute.
+MIT — free to use, modify, and distribute. See [LICENSE](LICENSE) file for details.
+
+---
+
+## 👥 Authors
+
+- Your Name — *Initial work* — [YourGitHub](https://github.com/yourusername)
+
+See also the list of [contributors](https://github.com/yourusername/no-deepfake/contributors) who participated in this project.
+
+---
+
+## 🙏 Acknowledgments
+
+- Thanks to the forensic imaging research community
+- Inspired by work from [Organization/Person Name]
+- Special thanks to all beta testers and contributors
